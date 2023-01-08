@@ -3,7 +3,7 @@ const app = express();
 
 const cors = require('cors');
 var mongoose = require('mongoose');
-// const Router = require("./routers");
+const Router = require('./router');
 const bodyParser = require('body-parser');
 const connectDB = require('./database/connect')();
 
@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// app.use("/api",Router);
+app.use('/api', Router);
 app.get('/', function (req, res) {
   res.send('welcome to css messaging app!!');
 });

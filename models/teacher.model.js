@@ -10,6 +10,10 @@ const TeacherSchema = new mongoose.Schema(
     email: String,
     password: String,
     authToken: String,
+    assignedClasses:{
+      type:Number,
+      default:0
+    },
     isApproved: {
       type: Boolean,
       default: false,
@@ -27,5 +31,4 @@ const TeacherSchema = new mongoose.Schema(
 );
 
 const Teacher = mongoose.model('Teacher', TeacherSchema);
-
 module.exports = Teacher;

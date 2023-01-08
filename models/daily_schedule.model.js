@@ -13,6 +13,7 @@ const DailyScheduleSchema = new mongoose.Schema(
     TeacherId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Teacher',
+      default:null
     },
     Subject: String,
     from_hour: Number,
@@ -30,7 +31,6 @@ const DailyScheduleSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-ClassSchema.index({ Grade: 1, Division: 1 }, { unique: true });
 const Schedule = mongoose.model('Schedule', DailyScheduleSchema);
 
 module.exports = Schedule;

@@ -14,8 +14,8 @@ const StudentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Class',
     },
-    desired_class_grade: Number,
-    desired_timing_half: {
+    Class_grade: Number,
+    Timing_half: {
       type: String,
       default: 'first',
       enum: ['first','second'],
