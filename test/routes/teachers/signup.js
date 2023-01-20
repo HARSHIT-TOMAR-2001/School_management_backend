@@ -1,39 +1,40 @@
 require('dotenv').config();
+process.env.NODE_ENV = 'test';
 const expect = require('chai').expect;
-const config = process.env;
-const request = require('request');
-const Testing_Url =config.Testing_Url
+const request = require('supertest');
+const teacherRouter = require('../../../router/teacher.router');
+const conn = require('../../../database/connect');
 
-describe('Teacher API', () => {
-    describe('Register Teacher', () => {
-      describe('Register teacher validation ERROR', () => {
-        describe('Create user invalid email field', () => {
-            const payload = {
-                name: "Prashant",
-                email: "",
-                password: "johndoe",
-                subjects:["physics","chemistry","math"],
-                grade_level:"Elementary"
-              }
-    
-          it('Status', done => {
-            request.post(`${Testing_Url}/api/teacher/register`, {
-              json: payload
-            }, (_, response) => {
-              expect(response.status).to.equal(400)
-              done()
-            })
-          })
-    
-          it('Message', done => {
-            request.post(`${Testing_Url}/api/teacher/register`, {
-              json: payload
-            }, (_, response) => {
-              expect(response.body.errors.email[0]).to.equal('Email is invalid')
-              done()
-            })
-          })
-        })
+describe('POST /teacher', function () {
+  before((done) => {
+    conn
+      .connectDB()
+      .then(() => done())
+      .catch((err) => done(err));
+  });
+
+  after((done) => {
+    conn
+      .close()
+      .then(() => done())
+      .catch((err) => done(err));
+  });
+  it('OK, register new Teacher', (done) => {
+    request(teacherRouter)
+      .post('/signup')
+      .send({
+        name: 'Prateek Dubey',
+        email: 'prateek@gmail.com',
+        password: 'prateek@123',
+        subjects: ['physics', 'chemistry', 'math'],
+        grade_level: 'Elementary',
       })
-    })
-  })
+      .then((res) => {
+        const body = res.body;
+        expect(body).to.contain.property('success');
+        expect(body).to.contain.property('msg');
+        done();
+      })
+      .catch((err) => done(err));
+  });
+});
